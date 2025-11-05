@@ -3,16 +3,17 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
 # מעתיק את קבצי הפרויקט ומבצע restore
-COPY *.sln ./
-COPY Clean.API/*.csproj ./Clean.API/
-COPY Clean.Core/*.csproj ./Clean.Core/
-COPY Clean.Data/*.csproj ./Clean.Data/
-COPY Clean.Service/*.csproj ./Clean.Service/
+COPY ../*.sln ./
+COPY *.csproj ./Clean.API/
+COPY ../Clean.Core/*.csproj ./Clean.Core/
+COPY ../Clean.Data/*.csproj ./Clean.Data/
+COPY ../Clean.Service/*.csproj ./Clean.Service/
 RUN dotnet restore
 
 # מעתיק את שאר הקבצים ובונה את האפליקציה
-COPY . ./
+COPY .. ./
 RUN dotnet publish ./Clean.API -c Release -o out
+
 
 # משתמש בתמונה של .NET Runtime כדי להריץ את האפליקציה
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
